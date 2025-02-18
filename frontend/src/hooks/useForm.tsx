@@ -27,7 +27,7 @@ const useForm = ({
     const validationErrors = validate(values);
     setErrors(validate(values));
     if (Object.keys(validationErrors).length === 0) {
-      onSubmit(values); 
+      onSubmit(values);
     }
   };
 

@@ -9,11 +9,18 @@ export const submitForm = async (data: {
   email: string;
   cep: string;
 }) => {
-  const response = await api.post('/form/submit', data);
-  return response.data;
+  try {
+    const response = await api.post('/form/submit', data);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      if (error) throw new Error(error.response?.data.message);
+    }
+  }
+  throw new Error('Erro ao enviar o formulário');
 };
 
 export const getForms = async () => {
-  const response = await api.get('/form');
+  const response = await api.get('/form/get');
   return response.data;
 };

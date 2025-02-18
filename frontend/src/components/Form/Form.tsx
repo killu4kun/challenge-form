@@ -5,21 +5,25 @@ import {
   validateEmail,
   validateName,
 } from '../../utils/validations';
-import { api } from '../../services/api';
+import { api, getForms } from '../../services/api';
+import { useEffect, useState } from 'react';
 
 const Form = () => {
+  const [forms, setForms] = useState<FormValues[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const { values, errors, handleChange, handleSubmit } = useForm({
     initialValues: {
       email: '',
       name: '',
       cep: '',
     },
-    onSubmit: (values: FormValues) => {
+    onSubmit: async (values: FormValues) => {
       try {
-        const response = api.post('/form/submit', values);
-        console.log('Resposta do backend:', response);
-      } catch (error) {
-        console.error('Erro ao enviar o formulário:', error);
+        await api.post('/form/submit', values);
+        setError('');
+      } catch (error: any) {
+        console.log(error);
+        setError(error.response.data.message);
       }
     },
     validate: (values: FormValues): FormErrors => {
@@ -30,6 +34,18 @@ const Form = () => {
       return errors;
     },
   });
+
+  useEffect(() => {
+    const fetchForms = async () => {
+      try {
+        const forms = await getForms();
+        setForms(forms);
+      } catch (error) {
+        console.error('Erro ao buscar os formulários:', error);
+      }
+    };
+    fetchForms();
+  }, [forms]);
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -54,7 +70,7 @@ const Form = () => {
             onChange={handleChange}
             className='w-full p-2 border rounded'
           />
-          {errors.email && <p className='text-red-500'>{errors.email}</p>}
+          {error && <p className='text-red-500'>{error}</p>}
         </div>
         <div>
           <label className='block text-sm font-medium'>CEP:</label>
@@ -69,6 +85,24 @@ const Form = () => {
         </div>
         <button type='submit'>Enviar</button>
       </form>
+      <div className='mt-8'>
+        <h2 className='text-xl font-bold mb-4'>Formulários Enviados</h2>
+        <ul>
+          {forms.map((form, index) => (
+            <li key={index} className='border p-2 mb-2'>
+              <p>
+                <strong>Nome:</strong> {form.name}
+              </p>
+              <p>
+                <strong>Email:</strong> {form.email}
+              </p>
+              <p>
+                <strong>CEP:</strong> {form.cep}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
