@@ -62,80 +62,103 @@ const Form = () => {
   }, []);
 
   return (
-    <div className='min-h-screen flex items-center justify-center'>
-      <h2 className='flex text-xl font-bold mb-4'>
-        {editingForm ? 'Editar Formulário' : 'Novo Formulário'}
-      </h2>
-      <form onSubmit={handleSubmit} className='space-y-4'>
-        <div>
-          <label className='block text-sm font-medium'>Nome:</label>
-          <input
-            type='text'
-            name='name'
-            value={values.name}
-            onChange={handleChange}
-            className='w-full p-2 border rounded'
-          />
-          {errors.name && <p className='text-red-500'>{errors.name}</p>}
-        </div>
-        <div>
-          <label className='block text-sm font-medium'>Email:</label>
-          <input
-            type='email'
-            name='email'
-            value={values.email}
-            onChange={handleChange}
-            className='w-full p-2 border rounded'
-          />
-          {error && <p className='text-red-500'>{error}</p>}
-        </div>
-        <div>
-          <label className='block text-sm font-medium'>CEP:</label>
-          <input
-            type='text'
-            name='cep'
-            value={values.cep}
-            onChange={handleChange}
-            className='w-full p-2 border rounded'
-          />
-          {errors.cep && <p className='text-red-500'>{errors.cep}</p>}
-        </div>
-        <button type='submit' className='bg-blue-500 text-white p-2 rounded'>
-          {editingForm ? 'Editar' : 'Enviar'}
-        </button>
-        {editingForm && (
+    <div className='min-h-screen flex items-center justify-center bg-gray-50 py-8'>
+      <div className='bg-white w-full max-w-lg p-8 rounded-lg shadow-lg'>
+        <h2 className='text-2xl font-semibold text-center mb-6'>
+          {editingForm ? 'Editar Formulário' : 'Novo Formulário'}
+        </h2>
+        <form onSubmit={handleSubmit} className='space-y-6'>
+          <div>
+            <label className='block text-sm font-medium text-gray-700'>
+              Nome:
+            </label>
+            <input
+              type='text'
+              name='name'
+              value={values.name}
+              onChange={handleChange}
+              className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            />
+            {errors.name && (
+              <p className='text-red-500 text-sm mt-1'>{errors.name}</p>
+            )}
+          </div>
+          <div>
+            <label className='block text-sm font-medium text-gray-700'>
+              Email:
+            </label>
+            <input
+              type='email'
+              name='email'
+              value={values.email}
+              onChange={handleChange}
+              className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            />
+            {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
+          </div>
+          <div>
+            <label className='block text-sm font-medium text-gray-700'>
+              CEP:
+            </label>
+            <input
+              type='text'
+              name='cep'
+              value={values.cep}
+              onChange={handleChange}
+              className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            />
+            {errors.cep && (
+              <p className='text-red-500 text-sm mt-1'>{errors.cep}</p>
+            )}
+          </div>
+          <div className='flex justify-between items-center'></div>
+
           <button
-            type='button'
-            onClick={() => setEditingForm(null)}
-            className='bg-red-500 text-white p-2 rounded'
+            type='submit'
+            className='bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none'
           >
-            Cancelar
+            {editingForm ? 'Editar' : 'Enviar'}
           </button>
-        )}
-      </form>
-      <div className='mt-8'>
-        <h2 className='text-xl font-bold mb-4'>Formulários Enviados</h2>
-        <ul>
-          {forms.map((form, index) => (
-            <li key={index} className='border p-2 mb-2'>
-              <p>
-                <strong>Nome:</strong> {form.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {form.email}
-              </p>
-              <p>
-                <strong>CEP:</strong> {form.cep}
-              </p>
-              <button
-                className='bg-yellow-500 text-white p-1 rounded mt-2'
-                onClick={() => setEditingForm(form)}
+          {editingForm && (
+            <button
+              type='button'
+              onClick={() => setEditingForm(null)}
+              className='text-red-600 py-2 px-4 rounded-md hover:bg-red-100 focus:outline-none'
+            >
+              Cancelar
+            </button>
+          )}
+        </form>
+        <div className='mt-8'>
+          <h2 className='text-xl font-bold mb-4'>Formulários Enviados</h2>
+          <ul className='space-y-4'>
+            {forms.map((form, index) => (
+              <li
+                key={index}
+                className='border p-4 rounded-lg shadow-sm hover:bg-gray-100'
               >
-                Editar
-              </button>
-            </li>
-          ))}
-        </ul>
+                <p>
+                  <strong className='font-medium text-gray-800'>Nome:</strong>{' '}
+                  {form.name}
+                </p>
+                <p>
+                  <strong className='font-medium text-gray-800'>Email:</strong>{' '}
+                  {form.email}
+                </p>
+                <p>
+                  <strong className='font-medium text-gray-800'>CEP:</strong>{' '}
+                  {form.cep}
+                </p>
+                <button
+                  className='bg-yellow-500 text-white py-1 px-3 rounded-md mt-2 hover:bg-yellow-600 focus:outline-none'
+                  onClick={() => setEditingForm(form)}
+                >
+                  Editar
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
