@@ -19,4 +19,5 @@ export interface UseFormReturn {
   errors: FormErrors;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  setValues?: (values: FormValues) => any;
 }
